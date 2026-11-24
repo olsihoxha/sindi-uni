@@ -1,0 +1,28 @@
+<% content_for :title, "Log in" %>
+<div class="login-layout">
+<section>
+<p class="eyebrow">YOUR WORKSPACE, READY.</p>
+<h1>Welcome<br>back.</h1>
+<p class="hero-copy">A little less admin.<br>A little more perspective.</p>
+<div class="login-note">
+<strong>One place for academic progress.</strong>
+<p>Instructors manage courses and assessments.<br>Students get a clear view of their results.</p>
+</div>
+</section>
+<section class="panel login-panel">
+<h2>Log in to Gradebook</h2>
+<p class="muted">Use the account provided by your instructor.</p>
+<%= form_with url: login_path, class: "stack-form" do |form| %>
+<div>
+<%= form.label :email %>
+<%= form.email_field :email, required: true, autocomplete: "username", value: params[:email], autofocus: true %>
+</div>
+<div>
+<%= form.label :password %>
+<%= form.password_field :password, required: true, autocomplete: "current-password" %>
+</div>
+<%= form.submit "Log in", class: "button" %>
+<% end %>
+<p class="fine-print">Need an account or a password reset? Contact your instructor.</p>
+</section>
+</div>

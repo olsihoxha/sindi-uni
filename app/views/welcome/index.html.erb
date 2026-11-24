@@ -1,0 +1,80 @@
+<% content_for :title, "Course catalog" %>
+<section class="hero">
+  <div>
+<p class="eyebrow">A LITTLE STRUCTURE. A LOT OF PROGRESS.</p>
+<h1>Every course.<br>A clearer picture.</h1>
+<p class="hero-copy">Explore what's being taught, meet your class,<br class="desktop-only"> and keep your academic progress in view.</p>
+<%= link_to current_user ? "Go to your dashboard" : "Log in to your workspace", current_user ? dashboard_path : login_path, class: "button" %>
+</div>
+  <aside class="hero-card">
+<span class="eyebrow">THE ACADEMIC PICTURE</span>
+<div class="hero-number">
+<%= @courses.size %>
+<span>courses to explore</span>
+</div>
+<div class="hero-card-bottom">
+<span>Five semesters.<br>One place to start.</span>
+<span class="course-glyph" aria-hidden="true">▤</span>
+</div>
+</aside>
+</section>
+<section aria-labelledby="catalog-heading">
+  <div class="section-heading">
+<div>
+<p class="eyebrow">EXPLORE THE CURRICULUM</p>
+<h2 id="catalog-heading">Course catalog</h2>
+<p class="muted">The current semester and four preceding semesters.</p>
+</div>
+<div class="filter">
+<label for="semester-filter">Semester</label>
+<select id="semester-filter">
+<option value="">All five semesters</option>
+<% @semesters.each do |semester| %>
+<option>
+<%= semester %>
+</option>
+<% end %>
+</select>
+</div>
+</div>
+  <p id="course-count" class="result-count" aria-live="polite">
+<%= pluralize(@courses.size, "course") %> available</p>
+  <div class="course-grid" id="course-grid">
+    <% @courses.each do |course| %>
+<article class="course-card" data-semester="<%= course.semester %>">
+<div class="card-top">
+<span class="course-code">
+<%= course.code %>
+</span>
+<span class="badge">
+<%= course.semester %>
+</span>
+</div>
+<h3>
+<%= course.name %>
+</h3>
+<p class="catalog-description">
+<%= course.catalog_data.presence || "Explore this course and view its class roster." %>
+</p>
+<div class="enrollment-count">
+<span aria-hidden="true">◉</span> <%= pluralize(course.enrollments.size, "student") %> enrolled</div>
+<div class="card-actions">
+<%= link_to "Class roster", course_enrollments_path(course) %>
+<%= link_to "Statistics", statistics_course_path(course), data: { statistics_url: statistics_course_path(course, format: :json), course_name: course.name }, class: "stats-link", aria: { haspopup: "dialog" } %>
+</div>
+</article>
+<% end %>
+  </div>
+  <p id="no-courses" class="empty-state" <%= 'hidden' if @courses.any? %>>No courses offered in this semester yet.</p>
+</section>
+<dialog id="statistics-dialog" aria-labelledby="statistics-title">
+<div class="dialog-heading">
+<p class="eyebrow">COURSE SNAPSHOT</p>
+<button type="button" id="close-statistics" class="icon-button" aria-label="Close statistics">×</button>
+</div>
+<h2 id="statistics-title">Course statistics</h2>
+<p class="muted">Completed weighted overall grades. Incomplete results are excluded.</p>
+<div id="statistics-content" aria-live="polite">
+</div>
+<p class="fine-print">Standard deviation uses the population formula. Scores may include extra credit, up to 120.</p>
+</dialog>

@@ -1,0 +1,25 @@
+<%= render "shared/errors", record: @grade %>
+<%= form_with model: [@course, @enrollment, @grade], class: "stack-form panel form-panel" do |form| %>
+<p>
+<strong>
+<%= @enrollment.student.full_name %>
+</strong>
+<br>
+<span class="muted">
+<%= @course.code %> · <%= @course.name %>
+</span>
+</p>
+<div>
+<%= form.label :assessment_id, "Assessment" %>
+<%= form.collection_select :assessment_id, @course.assessments, :id, :title, { prompt: "Choose an assessment" }, required: true %>
+</div>
+<div>
+<%= form.label :value, "Grade" %>
+<%= form.number_field :value, min: 0, max: 120, step: 1, required: true %>
+<p class="hint">A whole number from 0 to 120, including extra credit.</p>
+</div>
+<div class="form-actions">
+<%= form.submit "Save grade", class: "button" %>
+<%= link_to "Cancel", course_enrollment_grades_path(@course, @enrollment) %>
+</div>
+<% end %>

@@ -1,0 +1,10 @@
+<% content_for :title, "Manage courses" %>
+<div class="page-heading">
+<div>
+<p class="eyebrow">TEACHING & LEARNING</p>
+<h1>Courses</h1>
+<p class="muted">Build the curriculum. Keep the details together.</p>
+</div>
+<%= link_to "Create course", new_course_path, class: "button" %>
+</div>
+<%= render "table", courses: @courses %>

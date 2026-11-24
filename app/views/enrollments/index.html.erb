@@ -1,0 +1,68 @@
+<% content_for :title, "Class roster" %>
+<%= link_to "Back to catalog", welcome_path, class: "back-link" %>
+<div class="page-heading">
+<div>
+<p class="eyebrow">
+<%= @course.code %> / <%= @course.semester %>
+</p>
+<h1>Class roster</h1>
+<p class="muted">
+<%= @course.name %> · <%= pluralize(@enrollments.size, "student") %>
+</p>
+</div>
+<% if current_user.instructor? %>
+<%= link_to "Course details", @course, class: "button secondary" %>
+<% end %>
+</div>
+<% if current_user.instructor? %>
+<div class="panel">
+<h2>Enroll a student</h2>
+<% if @available_students.any? %>
+<%= form_with url: course_enrollments_path(@course), scope: :enrollment, class: "inline-form" do |form| %>
+<div>
+<%= form.label :student_id, "Student" %>
+<%= form.collection_select :student_id, @available_students, :id, :full_name, { prompt: "Choose a student" }, required: true %>
+</div>
+<%= form.submit "Enroll student", class: "button" %>
+<% end %>
+<% else %>
+<p>All available students are enrolled. <%= link_to "Create a student", new_student_path %> to add someone new.</p>
+<% end %>
+</div>
+<% end %>
+<div class="table-wrap spaced">
+<table>
+<thead>
+<tr>
+<th>Student</th>
+<% if current_user.instructor? %>
+<th>Email</th>
+<th>Actions</th>
+<% end %>
+</tr>
+</thead>
+<tbody>
+<% @enrollments.each do |enrollment| %>
+<tr>
+<td>
+<%= enrollment.student.full_name %>
+</td>
+<% if current_user.instructor? %>
+<td>
+<%= enrollment.student.email %>
+</td>
+<td class="actions">
+<%= link_to "Manage grades", course_enrollment_grades_path(@course, enrollment) %>
+<%= button_to "Remove", course_enrollment_path(@course, enrollment), method: :delete, class: "text-button danger", form: { data: { confirm: "Remove this enrollment and all of its grades?" } } %>
+</td>
+<% end %>
+</tr>
+<% end %>
+<% if @enrollments.empty? %>
+<tr>
+<td>No students enrolled yet.</td>
+</tr>
+<% end %>
+</tbody>
+</table>
+</div>

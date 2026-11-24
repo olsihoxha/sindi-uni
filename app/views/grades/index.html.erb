@@ -1,0 +1,85 @@
+<% content_for :title, "Course grades" %>
+<%= link_to "Back to #{current_user.instructor? ? 'class roster' : 'dashboard'}", current_user.instructor? ? course_enrollments_path(@course) : dashboard_path, class: "back-link" %>
+<div class="page-heading">
+<div>
+<p class="eyebrow">
+<%= @course.code %> / <%= @course.semester %>
+</p>
+<h1>
+<%= @course.name %>
+</h1>
+<p class="muted">Grades for <%= @enrollment.student.full_name %>
+</p>
+</div>
+<% if current_user.instructor? %>
+<%= link_to "Record grade", new_course_enrollment_grade_path(@course, @enrollment), class: "button" %>
+<% end %>
+</div>
+<div class="metric-grid">
+<div class="metric">
+<span>Weighted overall grade</span>
+<strong>
+<%= grade_label(@summary) %>
+</strong>
+</div>
+<div class="metric">
+<span>Assessments graded</span>
+<strong>
+<%= @summary[:graded_count] %> / <%= @summary[:assessment_count] %>
+</strong>
+</div>
+<div class="metric">
+<span>Weighted points earned</span>
+<strong>
+<%= @summary[:earned_points] %>
+</strong>
+</div>
+</div>
+<% unless @summary[:complete] %>
+<p class="flash notice">Your final overall grade will appear when all assessments are graded and the weights total 100%. Missing grades are not final zeros.</p>
+<% end %>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Assessment</th>
+<th>Weight</th>
+<th>Grade</th>
+<th>Weighted points</th>
+<% if current_user.instructor? %>
+<th>Actions</th>
+<% end %>
+</tr>
+</thead>
+<tbody>
+<% @course.assessments.each do |assessment| %>
+<% grade = @grades.find { |item| item.assessment_id == assessment.id } %>
+<tr>
+<td>
+<%= assessment.title %>
+</td>
+<td>
+<%= percentage(assessment.weight) %>
+</td>
+<td>
+<%= grade ? grade.value : "Not graded" %>
+</td>
+<td>
+<%= grade ? number_with_precision(grade.value * assessment.weight, precision: 2) : "—" %>
+</td>
+<% if current_user.instructor? %>
+<td class="actions">
+<% if grade %>
+<%= link_to "Edit", edit_course_enrollment_grade_path(@course, @enrollment, grade) %>
+<%= button_to "Delete", course_enrollment_grade_path(@course, @enrollment, grade), method: :delete, class: "text-button danger", form: { data: { confirm: "Delete this grade?" } } %>
+<% else %>
+<span class="muted">Awaiting grade</span>
+<% end %>
+</td>
+<% end %>
+</tr>
+<% end %>
+</tbody>
+</table>
+</div>
+<p class="fine-print">Overall grade = sum of each grade × its assessment weight. Grade range: 0–120, including extra credit.</p>

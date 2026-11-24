@@ -1,0 +1,25 @@
+<% content_for :title, "Course statistics" %>
+<%= link_to "Back to catalog", welcome_path, class: "back-link" %>
+<div class="page-heading">
+<div>
+<p class="eyebrow">COURSE SNAPSHOT</p>
+<h1>
+<%= @course.name %>
+</h1>
+<p class="muted">
+<%= @statistics[:basis] %>
+</p>
+</div>
+</div>
+<dl class="metric-grid">
+<% { count: "Completed results", min: "Minimum", max: "Maximum", mean: "Mean", standard_deviation: "Standard deviation" }.each do |key, label| %>
+<div class="metric">
+<dt>
+<%= label %>
+</dt>
+<dd>
+<%= @statistics[key] || "—" %>
+</dd>
+</div>
+<% end %>
+</dl>

@@ -1,0 +1,39 @@
+<% content_for :title, "Instructor dashboard" %>
+<div class="page-heading">
+<div>
+<p class="eyebrow">INSTRUCTOR WORKSPACE</p>
+<h1>Hello, <%= current_user.name %>.</h1>
+<p class="muted">Your courses and your students, all in view.</p>
+</div>
+<%= link_to "Create course", new_course_path, class: "button" %>
+</div>
+<div class="metric-grid">
+<div class="metric">
+<span>Courses</span>
+<strong>
+<%= @courses.size %>
+</strong>
+</div>
+<div class="metric">
+<span>Students</span>
+<strong>
+<%= @student_count %>
+</strong>
+</div>
+<div class="metric">
+<span>Grades recorded</span>
+<strong>
+<%= @grade_count %>
+</strong>
+</div>
+</div>
+<div class="section-heading">
+<h2>Your teaching overview</h2>
+<%= link_to "Manage all courses", courses_path %>
+</div>
+<%= render "courses/table", courses: @courses %>
+<div class="quick-links">
+<%= link_to "Manage students", students_path, class: "button secondary" %>
+<%= link_to "Update personal information", edit_profile_path, class: "button secondary" %>
+<%= link_to "View public catalog", welcome_path, class: "button secondary" %>
+</div>

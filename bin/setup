@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+require "fileutils"
+APP_ROOT = File.expand_path("..", __dir__)
+def system!(*args) = system(*args, exception: true)
+FileUtils.chdir APP_ROOT do
+  puts "== Installing dependencies =="
+  system("bundle check") || system!("bundle install")
+  puts "== Preparing database and demo records =="
+  system! "bin/rails", "db:prepare", "db:seed"
+  unless ARGV.include?("--skip-server")
+    puts "== Starting Gradebook at http://localhost:3000 =="
+    exec "bin/rails", "server"
+  end
+end

@@ -1,0 +1,25 @@
+<div class="form-row">
+<div>
+<%= form.label :name, "First name" %>
+<%= form.text_field :name, required: true, maxlength: 30, autocomplete: "given-name" %>
+</div>
+<div>
+<%= form.label :surname, "Surname" %>
+<%= form.text_field :surname, required: true, maxlength: 30, autocomplete: "family-name" %>
+</div>
+</div>
+<p class="hint">Name and surname together may contain at most 50 characters.</p>
+<div>
+<%= form.label :email %>
+<%= form.email_field :email, required: true, autocomplete: "email" %>
+</div>
+<div>
+<%= form.label :password, form.object.persisted? ? "New password (optional)" : "Password" %>
+<%= form.password_field :password, required: !form.object.persisted?, minlength: 8, autocomplete: "new-password" %>
+<p class="hint">At least 8 characters, including uppercase, lowercase and a number.<%= " Leave blank to keep the current password." if form.object.persisted? %>
+</p>
+</div>
+<div>
+<%= form.label :password_confirmation, "Confirm password" %>
+<%= form.password_field :password_confirmation, required: !form.object.persisted?, autocomplete: "new-password" %>
+</div>

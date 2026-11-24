@@ -1,0 +1,8 @@
+<%= render "shared/errors", record: @student %>
+<%= form_with model: @student, url: @student.persisted? ? student_path(@student) : students_path, class: "stack-form panel form-panel" do |form| %>
+<%= render "shared/user_fields", form: form %>
+<div class="form-actions">
+<%= form.submit @student.persisted? ? "Save changes" : "Create student", class: "button" %>
+<%= link_to "Cancel", students_path %>
+</div>
+<% end %>

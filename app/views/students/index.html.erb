@@ -1,0 +1,44 @@
+<% content_for :title, "Students" %>
+<div class="page-heading">
+<div>
+<p class="eyebrow">PEOPLE & PROGRESS</p>
+<h1>Students</h1>
+<p class="muted">A familiar face behind every result.</p>
+</div>
+<%= link_to "Add student", new_student_path, class: "button" %>
+</div>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Courses</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+<% @students.each do |student| %>
+<tr>
+<td>
+<%= link_to student.full_name, student_path(student) %>
+</td>
+<td>
+<%= student.email %>
+</td>
+<td>
+<%= student.enrollments.size %>
+</td>
+<td>
+<%= link_to "Edit", edit_student_path(student) %>
+</td>
+</tr>
+<% end %>
+<% if @students.empty? %>
+<tr>
+<td colspan="4">No students yet. Add one to get started.</td>
+</tr>
+<% end %>
+</tbody>
+</table>
+</div>

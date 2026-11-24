@@ -1,0 +1,43 @@
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th scope="col">Course</th>
+<th scope="col">Semester</th>
+<th scope="col">Students</th>
+<th scope="col">Assessment plan</th>
+<th scope="col">Actions</th>
+</tr>
+</thead>
+<tbody>
+<% courses.each do |course| %>
+<tr>
+<td>
+<span class="table-code">
+<%= course.code %>
+</span>
+<%= link_to course.name, course %>
+</td>
+<td>
+<%= course.semester %>
+</td>
+<td>
+<%= course.enrollments.size %>
+</td>
+<td>
+<span class="badge <%= 'success' if course.assessment_plan_complete? %>">
+<%= percentage(course.total_weight) %> allocated</span>
+</td>
+<td>
+<%= link_to "Class roster", course_enrollments_path(course) %>
+</td>
+</tr>
+<% end %>
+<% if courses.empty? %>
+<tr>
+<td colspan="5" class="muted">No courses yet. Create your first course to get started.</td>
+</tr>
+<% end %>
+</tbody>
+</table>
+</div>

@@ -1,0 +1,72 @@
+<% content_for :title, @course.name %>
+<%= link_to "Back to courses", current_user.instructor? ? courses_path : dashboard_path, class: "back-link" %>
+<div class="page-heading">
+<div>
+<p class="eyebrow">
+<%= @course.code %> / <%= @course.semester %>
+</p>
+<h1>
+<%= @course.name %>
+</h1>
+</div>
+<% if current_user.instructor? %>
+<%= link_to "Edit course", edit_course_path(@course), class: "button secondary" %>
+<% end %>
+</div>
+<div class="panel catalog-panel">
+<h2>About this course</h2>
+<p>
+<%= @course.catalog_data.presence || "No catalog description has been added." %>
+</p>
+<%= link_to "View class roster", course_enrollments_path(@course), class: "button secondary" %>
+</div>
+<div class="section-heading">
+<div>
+<h2>Assessment plan</h2>
+<p class="muted">
+<%= percentage(@course.total_weight) %> of 100% allocated</p>
+</div>
+<% if current_user.instructor? %>
+<%= link_to "Add assessment", new_course_assessment_path(@course), class: "button" %>
+<% end %>
+</div>
+<% unless @course.assessment_plan_complete? %>
+<div class="flash alert">This plan is a draft. Assessment weights must total 100% before grades can be recorded.</div>
+<% end %>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Assessment</th>
+<th>Weight</th>
+<% if current_user.instructor? %>
+<th>Actions</th>
+<% end %>
+</tr>
+</thead>
+<tbody>
+<% @course.assessments.each do |assessment| %>
+<tr>
+<td>
+<%= assessment.title %>
+</td>
+<td>
+<%= percentage(assessment.weight) %>
+</td>
+<% if current_user.instructor? %>
+<td class="actions">
+<%= link_to "Edit", edit_course_assessment_path(@course, assessment) %>
+<%= button_to "Delete", course_assessment_path(@course, assessment), method: :delete, class: "text-button danger", form: { data: { confirm: "Delete this assessment and its grades?" } } %>
+</td>
+<% end %>
+</tr>
+<% end %>
+</tbody>
+</table>
+</div>
+<% if current_user.instructor? %>
+<div class="danger-zone">
+<p>Deleting this course also removes its assessments, enrollments and grades.</p>
+<%= button_to "Delete course", @course, method: :delete, class: "button danger-button", form: { data: { confirm: "Permanently delete this course and all its grades?" } } %>
+</div>
+<% end %>

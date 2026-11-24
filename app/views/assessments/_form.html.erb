@@ -1,0 +1,19 @@
+<%= render "shared/errors", record: @assessment %>
+<%= form_with model: [@course, @assessment], class: "stack-form panel form-panel" do |form| %>
+<p class="muted">
+<%= @course.code %> · <%= @course.name %>
+</p>
+<div>
+<%= form.label :title %>
+<%= form.text_field :title, required: true, maxlength: 30 %>
+</div>
+<div>
+<%= form.label :weight, "Weight (0 to 1)" %>
+<%= form.number_field :weight, required: true, min: 0, max: 1, step: "0.000001", placeholder: "0.25" %>
+<p class="hint">For 25%, enter 0.25. All assessment weights must add up to 1 (100%).</p>
+</div>
+<div class="form-actions">
+<%= form.submit class: "button" %>
+<%= link_to "Cancel", @course %>
+</div>
+<% end %>

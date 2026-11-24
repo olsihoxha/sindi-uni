@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>
+<%= content_for?(:title) ? "#{yield(:title)} · Gradebook" : "Gradebook · University XYZ" %>
+</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="A clear view of courses, students and academic progress.">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application" %>
+    <%= javascript_include_tag "application", defer: true %>
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <%= link_to welcome_path, class: "brand", aria: { label: "Gradebook home" } do %>
+<span class="brand-mark">g.</span>
+<span>Gradebook<small>UNIVERSITY XYZ</small>
+</span>
+<% end %>
+        <nav aria-label="Main navigation">
+          <%= link_to "Course catalog", welcome_path, class: current_page?(welcome_path) || current_page?(root_path) ? "active" : nil %>
+          <% if current_user %>
+            <%= link_to "Dashboard", dashboard_path, class: current_page?(dashboard_path) ? "active" : nil %>
+            <% if current_user.instructor? %>
+<%= link_to "Courses", courses_path %>
+<%= link_to "Students", students_path %>
+<%= link_to "My profile", edit_profile_path %>
+<% end %>
+          <% else %>
+<%= link_to "Log in", login_path, class: "nav-login" %>
+<% end %>
+        </nav>
+      </div>
+    </header>
+    <div class="session-bar">
+<div class="container">
+<% if current_user %>
+<span>Logged as <%= current_user.role %>: <strong>
+<%= current_user.full_name %>
+</strong>
+</span>
+<%= button_to "Click here to logout", logout_path, method: :delete, class: "text-button" %>
+<% else %>
+<span>Not logged in.</span>
+<span class="session-note">Explore courses. Keep learning.</span>
+<% end %>
+</div>
+</div>
+    <main id="main" class="container">
+      <% flash.each do |type, message| %>
+<div class="flash <%= type %>" role="<%= type == 'alert' ? 'alert' : 'status' %>">
+<%= message %>
+</div>
+<% end %>
+      <%= yield %>
+    </main>
+    <footer class="container footer">
+<span>Gradebook <span class="muted">/ University XYZ</span>
+</span>
+<span>Clarity in every course.</span>
+</footer>
+  </body>
+</html>

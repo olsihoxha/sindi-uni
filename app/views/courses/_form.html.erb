@@ -1,0 +1,33 @@
+<%= render "shared/errors", record: @course %>
+<%= form_with model: @course, class: "stack-form panel form-panel" do |form| %>
+<div class="form-row">
+<div>
+<%= form.label :code, "Course code" %>
+<%= form.text_field :code, required: true, minlength: 5, maxlength: 6, placeholder: "CS101" %>
+<p class="hint">A unique code of 5 or 6 characters.</p>
+</div>
+<div>
+<%= form.label :semester %>
+<%= form.text_field :semester, required: true, maxlength: 10, placeholder: "Fall 2026", list: "semester-options" %>
+<datalist id="semester-options">
+<% Semester.recent.each do |semester| %>
+<option value="<%= semester %>">
+<% end %>
+</datalist>
+<p class="hint">Use Spr, Sum or Fall, then the year: Fall 2026.</p>
+</div>
+</div>
+<div>
+<%= form.label :name, "Course name" %>
+<%= form.text_field :name, required: true, maxlength: 50 %>
+</div>
+<div>
+<%= form.label :catalog_data, "Catalog description (optional)" %>
+<%= form.text_area :catalog_data, maxlength: 500, rows: 5 %>
+<p class="hint">A short overview, up to 500 characters.</p>
+</div>
+<div class="form-actions">
+<%= form.submit class: "button" %>
+<%= link_to "Cancel", @course.persisted? ? course_path(@course) : courses_path %>
+</div>
+<% end %>

@@ -1,0 +1,44 @@
+<% content_for :title, "My progress" %>
+<div class="page-heading">
+<div>
+<p class="eyebrow">STUDENT WORKSPACE</p>
+<h1>Hello, <%= current_user.name %>.</h1>
+<p class="muted">Your learning, at a glance. Select a course to explore your grades.</p>
+</div>
+<span class="badge">
+<%= pluralize(@enrollments.size, "enrolled course") %>
+</span>
+</div>
+<div class="course-grid">
+<% @enrollments.each do |enrollment| %>
+<% summary = GradeSummary.call(enrollment) %>
+<article class="course-card">
+<div class="card-top">
+<span class="course-code">
+<%= enrollment.course.code %>
+</span>
+<span class="badge">
+<%= enrollment.course.semester %>
+</span>
+</div>
+<h2>
+<%= enrollment.course.name %>
+</h2>
+<div class="grade-display">
+<strong>
+<%= grade_label(summary) %>
+</strong>
+<span>
+<%= summary[:complete] ? "Weighted overall grade" : "#{summary[:graded_count]} of #{summary[:assessment_count]} assessments graded" %>
+</span>
+</div>
+<%= link_to "View my grades", course_enrollment_grades_path(enrollment.course, enrollment), class: "button secondary" %>
+</article>
+<% end %>
+</div>
+<% if @enrollments.empty? %>
+<div class="empty-state">
+<h2>Your next chapter starts here.</h2>
+<p>Your instructor will enroll you in your courses. Check back soon.</p>
+</div>
+<% end %>
