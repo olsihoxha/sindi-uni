@@ -14,7 +14,7 @@ jobs:
       - name: Prepare test database and run tests
         env:
           RAILS_ENV: test
-        run: bin/rails db:prepare test
+        run: bin/rails db:test:prepare test
       - name: Check autoloading
         run: bin/rails zeitwerk:check
       - name: Compile production assets
