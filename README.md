@@ -2,7 +2,7 @@
 
 A complete Ruby on Rails grade-keeping application for **CS403 – Engineering Advanced Web Applications**, implemented from [`aewa-coursework.pdf`](aewa-coursework.pdf).
 
-Repository: [olsihoxha/sindi-uni](https://github.com/olsihoxha/sindi-uni) (private).
+Repository: [olsihoxha/sindi-uni](https://github.com/olsihoxha/sindi-uni) (public).
 
 Instructors manage courses, students, enrollments, assessments and grades. Students see their own progress. Visitors can explore the last five semesters and view aggregate course statistics.
 
